@@ -1,2 +1,2 @@
-# sbatis-demo
-sbatis 案例项目
+# obatis-demo
+obatis 案例项目
