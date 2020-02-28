@@ -1,25 +1,22 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.demo</groupId>
-    <artifactId>sbatis-demo</artifactId>
+
+    <groupId>com.obatis</groupId>
+    <artifactId>obatis-demo</artifactId>
     <version>1.0</version>
-    <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.sbatis</groupId>
-            <artifactId>sbatis-web</artifactId>
-            <version>1.0</version>
+            <groupId>com.obatis</groupId>
+            <artifactId>obatis-core</artifactId>
+            <version>2.1.0-releases</version>
         </dependency>
     </dependencies>
+
     <build>
-        <finalName>sbatis-demo</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <!-- 1、设置jar的入口类 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -28,29 +25,52 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.demo.ApplicationStartup</mainClass>
+                            <mainClass>com.obatis.ApplicationStartup</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
-            <!--2、把附属的jar打到jar内部的lib目录中 -->
+            <!--拷贝依赖的jar包到lib目录  -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy-dependencies</id>
+                        <id>copy</id>
                         <phase>package</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <outputDirectory>${project.build.directory}/lib
+                            </outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
         </plugins>
+        <finalName>obatis-demo</finalName>
     </build>
+    <repositories>
+        <repository>
+            <id>nexus-aliyun</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+        </repository>
+        <repository>
+            <id>sonatype-repo1</id>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <id>sonatype-repo</id>
+            <url>https://oss.sonatype.org/service/local/repositories/releases/content</url>
+        </repository>
+    </repositories>
 </project>
-
