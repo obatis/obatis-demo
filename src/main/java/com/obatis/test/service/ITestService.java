@@ -1,5 +1,7 @@
 package com.obatis.test.service;
 
+import com.obatis.config.request.PageParam;
+import com.obatis.config.response.result.PageInfo;
 import com.obatis.core.exception.HandleException;
 import com.obatis.test.model.TestModel;
 import com.obatis.test.web.command.TestInfo;
@@ -27,4 +29,11 @@ public interface ITestService {
      * @return
      */
     List<TestInfo> listByParams(TestInfo params);
+
+    /**
+     * 分页查询
+     * @param param
+     * @return
+     */
+    PageInfo<TestInfo> page(PageParam param);
 }
