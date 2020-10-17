@@ -1,11 +1,11 @@
-package com.obatis.test.model;
+package com.demo.test.model;
 
 import com.obatis.core.CommonModel;
 import com.obatis.core.annotation.Column;
 import com.obatis.core.annotation.Table;
-import com.obatis.test.model.fields.TestField;
+import com.demo.test.model.fields.TestField;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Table(name = TestField.TABLE_NAME)
 public class TestModel extends CommonModel {
@@ -24,7 +24,7 @@ public class TestModel extends CommonModel {
     /**
      * 生日
      */
-    private Date birthday;
+    private LocalDate birthday;
 
     public int getType() {
         return type;
@@ -42,11 +42,11 @@ public class TestModel extends CommonModel {
         this.userName = userName;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 }

@@ -1,4 +1,4 @@
-package com.obatis;
+package com.demo;
 
 import com.obatis.core.annotation.StartupLoadAutoConfigure;
 import org.springframework.boot.SpringApplication;

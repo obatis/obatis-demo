@@ -11,7 +11,7 @@
         <dependency>
             <groupId>com.obatis</groupId>
             <artifactId>obatis-core</artifactId>
-            <version>2.1.0-releases</version>
+            <version>2.2.1-release</version>
         </dependency>
     </dependencies>
 
@@ -25,7 +25,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.obatis.ApplicationStartup</mainClass>
+                            <mainClass>com.demo.ApplicationStartup</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

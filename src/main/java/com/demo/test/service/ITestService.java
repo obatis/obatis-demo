@@ -1,10 +1,10 @@
-package com.obatis.test.service;
+package com.demo.test.service;
 
 import com.obatis.config.request.PageParam;
 import com.obatis.config.response.result.PageInfo;
 import com.obatis.core.exception.HandleException;
-import com.obatis.test.model.TestModel;
-import com.obatis.test.web.command.TestInfo;
+import com.demo.test.model.TestModel;
+import com.demo.test.web.command.TestInfo;
 
 import java.util.List;
 

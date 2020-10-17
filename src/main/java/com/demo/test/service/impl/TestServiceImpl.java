@@ -1,26 +1,23 @@
-package com.obatis.test.service.impl;
+package com.demo.test.service.impl;
 
 import com.obatis.config.request.PageParam;
 import com.obatis.config.response.result.PageInfo;
 import com.obatis.convert.BeanCommonConvert;
+import com.obatis.core.DBHandleFactory;
 import com.obatis.core.exception.HandleException;
 import com.obatis.core.sql.QueryProvider;
-import com.obatis.test.dao.TestDAO;
-import com.obatis.test.model.TestModel;
-import com.obatis.test.model.fields.TestField;
-import com.obatis.test.service.ITestService;
-import com.obatis.test.web.command.TestInfo;
+import com.demo.test.model.TestModel;
+import com.demo.test.model.fields.TestField;
+import com.demo.test.service.ITestService;
+import com.demo.test.web.command.TestInfo;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.math.BigInteger;
 import java.util.List;
 
 @Service
-public class TestServiceImpl implements ITestService {
+public class TestServiceImpl extends DBHandleFactory<TestModel> implements ITestService {
 
-    @Resource
-    private TestDAO testDAO;
 
     /**
      * 添加
@@ -30,7 +27,7 @@ public class TestServiceImpl implements ITestService {
     @Override
     public void add(TestInfo info) throws HandleException {
         TestModel model = BeanCommonConvert.convert(info, TestModel.class);
-        this.testDAO.insert(model);
+        this.insert(model);
     }
 
     /**
@@ -40,11 +37,11 @@ public class TestServiceImpl implements ITestService {
     @Override
     public List<TestModel> list() {
         /**
-         * 映射sql > select * from test;
+         * 映射sql > select * from demo;
          * QueryProvider 更多用法，请参考注释
          */
         QueryProvider provider = new QueryProvider();
-        return this.testDAO.list(provider);
+        return this.list(provider);
     }
 
     /**
@@ -55,13 +52,13 @@ public class TestServiceImpl implements ITestService {
     @Override
     public List<TestInfo> listByParams(TestInfo params) {
         /**
-         * 映射sql > select * from test where user_name = ? and type = ?;
+         * 映射sql > select * from demo where user_name = ? and type = ?;
          * QueryProvider 更多用法，请参考注释
          */
         QueryProvider provider = new QueryProvider();
         provider.equals(TestField.FIELD_USER_NAME, params.getUserName());
         provider.equals(TestField.FIELD_TYPE, params.getType());
-        return this.testDAO.list(provider, TestInfo.class);
+        return this.list(provider, TestInfo.class);
     }
 
     /**
@@ -72,7 +69,7 @@ public class TestServiceImpl implements ITestService {
     @Override
     public PageInfo<TestInfo> page(PageParam param) {
         /**
-         * 映射sql > select type, user_name, birthday from test where user_name = ? and type = ? limit ?,?
+         * 映射sql > select type, user_name, birthday from demo where user_name = ? and type = ? limit ?,?
          * QueryProvider 更多用法，请参考注释
          */
         QueryProvider provider = new QueryProvider();
@@ -80,7 +77,7 @@ public class TestServiceImpl implements ITestService {
         provider.setPage(param);
         provider.equals(TestField.FIELD_USER_NAME, "name");
         provider.equals(TestField.FIELD_TYPE, 1);
-        return this.testDAO.page(provider, TestInfo.class);
+        return this.page(provider, TestInfo.class);
     }
 
     /**
@@ -88,13 +85,13 @@ public class TestServiceImpl implements ITestService {
      */
     public void update() {
         /**
-         * 映射sql > update test set user_name = ? where id = ?
+         * 映射sql > update demo set user_name = ? where id = ?
          * QueryProvider 更多用法，请参考注释
          */
         QueryProvider provider = new QueryProvider();
         provider.set(TestField.FIELD_USER_NAME, "xiaoming");
         provider.equals(TestField.FIELD_ID, "123456789");
-        this.testDAO.update(provider);
+        this.update(provider);
     }
 
     /**
@@ -103,18 +100,18 @@ public class TestServiceImpl implements ITestService {
      */
     public void delete() {
         /**
-         * 映射sql > delete test where user_name = ?
+         * 映射sql > delete demo where user_name = ?
          * QueryProvider 更多用法，请参考注释
          */
         QueryProvider provider = new QueryProvider();
         provider.equals(TestField.FIELD_USER_NAME, "xiaoming");
-        this.testDAO.update(provider);
+        this.update(provider);
 
         /**
          * 提醒：删除还提供了根据ID进行删除的方法
-         * 映射sql > delete test where id = ?
+         * 映射sql > delete demo where id = ?
          */
-        this.testDAO.deleteById(new BigInteger("123456789"));
+        this.deleteById(new BigInteger("123456789"));
     }
 
     /**
@@ -123,7 +120,7 @@ public class TestServiceImpl implements ITestService {
     public void leftJoin() {
 
         /**
-         * 映射sql > select t.user_name, t.type, c.salary, c.company_name from test t left join user_company_list c on t.id=c.user_id where t.type in (?,?,?) or t.user_name=?
+         * 映射sql > select t.user_name, t.type, c.salary, c.company_name from demo t left join user_company_list c on t.id=c.user_id where t.type in (?,?,?) or t.user_name=?
          * 提醒：left join 如果被连接查询的表不出现 select()则默认不查询，而主表如果出现 select()则查询列举的字段，不出现则表示查询主表所有字段。如果不查询主表字段，则设置 selectNothing() 为true，详见注释说明。
          * QueryProvider 更多用法，请参考注释
          */
@@ -138,7 +135,7 @@ public class TestServiceImpl implements ITestService {
         workProvider.setJoinTableName("user_company_list");
         workProvider.select("salary", "company_name");
         provider.setleftJoin(TestField.FIELD_ID, "user_id", workProvider);
-        this.testDAO.list(provider, TestInfo.class);
+        this.list(provider, TestInfo.class);
 
         /**
          * 拓展说明：

@@ -1,10 +1,10 @@
-package com.obatis.test.model.fields;
+package com.demo.test.model.fields;
 
 import com.obatis.core.CommonField;
 
 public class TestField extends CommonField {
 
-    public static final String TABLE_NAME = "test";
+    public static final String TABLE_NAME = "demo";
 
     /**
      * 类型

@@ -1,8 +1,9 @@
-package com.obatis.test.web;
+package com.demo.test.web;
 
-import com.obatis.test.model.TestModel;
-import com.obatis.test.service.ITestService;
-import com.obatis.test.web.command.TestInfo;
+import com.demo.test.model.TestModel;
+import com.demo.test.service.ITestService;
+import com.demo.test.web.command.TestInfo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
+@Api(tags = "【测试模块】-展示接口访问和注解配置")
 @RestController
 @RequestMapping("test")
 public class TestController {
