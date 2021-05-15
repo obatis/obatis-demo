@@ -2,13 +2,13 @@ package com.demo.test.service;
 
 import com.obatis.config.request.PageParam;
 import com.obatis.config.response.result.PageInfo;
-import com.obatis.core.exception.HandleException;
-import com.demo.test.model.TestModel;
+import com.demo.test.model.TestInfoModel;
 import com.demo.test.web.command.TestInfo;
+import com.obatis.exception.HandleException;
 
 import java.util.List;
 
-public interface ITestService {
+public interface ITestInfoService {
 
     /**
      * 添加
@@ -21,7 +21,7 @@ public interface ITestService {
      * 查询列表
      * @return
      */
-    List<TestModel> list();
+    List<TestInfoModel> list();
 
     /**
      * 根据条件查询
@@ -36,4 +36,6 @@ public interface ITestService {
      * @return
      */
     PageInfo<TestInfo> page(PageParam param);
+
+    void delete();
 }

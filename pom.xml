@@ -10,8 +10,8 @@
     <dependencies>
         <dependency>
             <groupId>com.obatis</groupId>
-            <artifactId>obatis-core</artifactId>
-            <version>2.2.1-release</version>
+            <artifactId>obatis-starter</artifactId>
+            <version>1.0-release</version>
         </dependency>
     </dependencies>
 

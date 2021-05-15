@@ -1,14 +1,14 @@
 package com.demo.test.model;
 
-import com.obatis.core.CommonModel;
-import com.obatis.core.annotation.Column;
-import com.obatis.core.annotation.Table;
-import com.demo.test.model.fields.TestField;
+import com.demo.test.model.fields.TestInfoField;
+import com.obatis.orm.annotation.Column;
+import com.obatis.orm.annotation.Table;
+import com.obatis.orm.model.type.CommonBigIntegerModel;
 
 import java.time.LocalDate;
 
-@Table(name = TestField.TABLE_NAME)
-public class TestModel extends CommonModel {
+@Table(name = TestInfoField.TABLE_NAME)
+public class TestInfoModel extends CommonBigIntegerModel {
 
     // 如果数据库字段和属性值一样，可以不用加 @Column 注解
 
@@ -17,14 +17,19 @@ public class TestModel extends CommonModel {
      */
     private int type;
     /**
-     * 用户名
-     */
-    @Column(name = TestField.FIELD_USER_NAME)
-    private String userName;
-    /**
      * 生日
      */
     private LocalDate birthday;
+    /**
+     * 用户名
+     */
+    @Column(name = TestInfoField.FIELD_USER_NAME)
+    private String userName;
+    /**
+     * 手机号码
+     */
+    @Column(name = TestInfoField.FIELD_PHONE_NUMBER)
+    private String phoneNumber;
 
     public int getType() {
         return type;
@@ -48,5 +53,13 @@ public class TestModel extends CommonModel {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

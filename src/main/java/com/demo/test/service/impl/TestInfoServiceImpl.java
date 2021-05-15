@@ -1,23 +1,28 @@
 package com.demo.test.service.impl;
 
+import com.demo.test.model.TestInfoModel;
+import com.demo.test.model.fields.TestInfoField;
+import com.demo.test.service.ITestInfoService;
+import com.demo.test.web.command.TestInfo;
 import com.obatis.config.request.PageParam;
 import com.obatis.config.response.result.PageInfo;
-import com.obatis.convert.BeanCommonConvert;
-import com.obatis.core.DBHandleFactory;
-import com.obatis.core.exception.HandleException;
-import com.obatis.core.sql.QueryProvider;
-import com.demo.test.model.TestModel;
-import com.demo.test.model.fields.TestField;
-import com.demo.test.service.ITestService;
-import com.demo.test.web.command.TestInfo;
+import com.obatis.convert.BeanConvert;
+import com.obatis.exception.HandleException;
+import com.obatis.orm.provider.DeleteProvider;
+import com.obatis.orm.provider.QueryProvider;
+import com.obatis.orm.provider.UpdateProvider;
+import com.obatis.orm.provider.handle.ProviderBuilder;
+import com.obatis.orm.sql.SqlHandleFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.List;
 
 @Service
-public class TestServiceImpl extends DBHandleFactory<TestModel> implements ITestService {
+public class TestInfoServiceImpl extends SqlHandleFactory<TestInfoModel> implements ITestInfoService {
 
+//    @Resource
+//    private SqlHandleFactory<TestInfo> sqlHandle;
 
     /**
      * 添加
@@ -26,7 +31,7 @@ public class TestServiceImpl extends DBHandleFactory<TestModel> implements ITest
      */
     @Override
     public void add(TestInfo info) throws HandleException {
-        TestModel model = BeanCommonConvert.convert(info, TestModel.class);
+        TestInfoModel model = BeanConvert.convert(info, TestInfoModel.class);
         this.insert(model);
     }
 
@@ -35,12 +40,12 @@ public class TestServiceImpl extends DBHandleFactory<TestModel> implements ITest
      * @return
      */
     @Override
-    public List<TestModel> list() {
+    public List<TestInfoModel> list() {
         /**
          * 映射sql > select * from demo;
          * QueryProvider 更多用法，请参考注释
          */
-        QueryProvider provider = new QueryProvider();
+        QueryProvider provider = ProviderBuilder.query();
         return this.list(provider);
     }
 
@@ -55,9 +60,9 @@ public class TestServiceImpl extends DBHandleFactory<TestModel> implements ITest
          * 映射sql > select * from demo where user_name = ? and type = ?;
          * QueryProvider 更多用法，请参考注释
          */
-        QueryProvider provider = new QueryProvider();
-        provider.equals(TestField.FIELD_USER_NAME, params.getUserName());
-        provider.equals(TestField.FIELD_TYPE, params.getType());
+        QueryProvider provider = ProviderBuilder.query();
+        provider.equal(TestInfoField.FIELD_USER_NAME, params.getUserName());
+        provider.equal(TestInfoField.FIELD_TYPE, params.getType());
         return this.list(provider, TestInfo.class);
     }
 
@@ -72,11 +77,11 @@ public class TestServiceImpl extends DBHandleFactory<TestModel> implements ITest
          * 映射sql > select type, user_name, birthday from demo where user_name = ? and type = ? limit ?,?
          * QueryProvider 更多用法，请参考注释
          */
-        QueryProvider provider = new QueryProvider();
-        provider.select(TestField.FIELD_TYPE, TestField.FIELD_USER_NAME, TestField.FIELD_BIRTHDAY);
-        provider.setPage(param);
-        provider.equals(TestField.FIELD_USER_NAME, "name");
-        provider.equals(TestField.FIELD_TYPE, 1);
+        QueryProvider provider = ProviderBuilder.query();
+        provider.select(TestInfoField.FIELD_TYPE, TestInfoField.FIELD_USER_NAME, TestInfoField.FIELD_BIRTHDAY);
+        provider.setPageInfo(param.getPage(), param.getRows());
+        provider.equal(TestInfoField.FIELD_USER_NAME, "name");
+        provider.equal(TestInfoField.FIELD_TYPE, 1);
         return this.page(provider, TestInfo.class);
     }
 
@@ -88,9 +93,9 @@ public class TestServiceImpl extends DBHandleFactory<TestModel> implements ITest
          * 映射sql > update demo set user_name = ? where id = ?
          * QueryProvider 更多用法，请参考注释
          */
-        QueryProvider provider = new QueryProvider();
-        provider.set(TestField.FIELD_USER_NAME, "xiaoming");
-        provider.equals(TestField.FIELD_ID, "123456789");
+        UpdateProvider provider = ProviderBuilder.update();
+        provider.set(TestInfoField.FIELD_USER_NAME, "xiaoming");
+        provider.equal(TestInfoField.FIELD_ID, "123456789");
         this.update(provider);
     }
 
@@ -103,9 +108,9 @@ public class TestServiceImpl extends DBHandleFactory<TestModel> implements ITest
          * 映射sql > delete demo where user_name = ?
          * QueryProvider 更多用法，请参考注释
          */
-        QueryProvider provider = new QueryProvider();
-        provider.equals(TestField.FIELD_USER_NAME, "xiaoming");
-        this.update(provider);
+        DeleteProvider provider = ProviderBuilder.delete();
+        provider.equal(TestInfoField.FIELD_USER_NAME, "xiaoming");
+        this.delete(provider);
 
         /**
          * 提醒：删除还提供了根据ID进行删除的方法
@@ -125,16 +130,15 @@ public class TestServiceImpl extends DBHandleFactory<TestModel> implements ITest
          * QueryProvider 更多用法，请参考注释
          */
 
-        QueryProvider provider = new QueryProvider();
-        provider.select(TestField.FIELD_USER_NAME, TestField.FIELD_TYPE);
+        QueryProvider provider = ProviderBuilder.query();
+        provider.select(TestInfoField.FIELD_USER_NAME, TestInfoField.FIELD_TYPE);
         Integer[] typeArray = {1,2,3};
-        provider.in(TestField.FIELD_TYPE, typeArray);
-        provider.orEquals(TestField.FIELD_USER_NAME, "xiaoming");
+        provider.in(TestInfoField.FIELD_TYPE, typeArray);
+        provider.orEqual(TestInfoField.FIELD_USER_NAME, "xiaoming");
 
-        QueryProvider workProvider = new QueryProvider();
-        workProvider.setJoinTableName("user_company_list");
+        QueryProvider workProvider = ProviderBuilder.query("user_company_list");
         workProvider.select("salary", "company_name");
-        provider.setleftJoin(TestField.FIELD_ID, "user_id", workProvider);
+        provider.addleftJoin(TestInfoField.FIELD_ID, "user_id", workProvider);
         this.list(provider, TestInfo.class);
 
         /**
