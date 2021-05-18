@@ -21,9 +21,6 @@ import java.util.List;
 @Service
 public class TestInfoServiceImpl extends SqlHandleFactory<TestInfoModel> implements ITestInfoService {
 
-//    @Resource
-//    private SqlHandleFactory<TestInfo> sqlHandle;
-
     /**
      * 添加
      * @param info
